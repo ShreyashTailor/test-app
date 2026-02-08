@@ -1,13 +1,25 @@
-name: CI
+name: CI with Docker
 
 on: [push]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: node index.js
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run app
+        run: node index.js
+
+      - name: Build Docker image
+        run: docker build -t test-app .
